@@ -1,0 +1,12 @@
+{
+  "name": "canvas-painter",
+  "version": "1.0.0",
+  "description": "a canvas painter",
+  "keywords": "canvas",
+  "main": "index.js",
+  "scripts": {
+    "server": "live-server ./ --port=1003"
+  },
+  "author": "kiznaiver",
+  "license": "MIC"
+}

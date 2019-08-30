@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>canvas 画板</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <style>
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+
+    <div id="actions" class="actions">
+        <svg id="brush" class="icon active" aria-hidden="true">
+            <use xlink:href="#i-qianbi"></use>
+        </svg>
+
+        <svg id="eraser"class="icon" aria-hidden="true">
+            <use xlink:href="#i-eraser"></use>
+        </svg>
+        <svg id="clear"class="icon" aria-hidden="true">
+                <use xlink:href="#i-ashcan"></use>
+        </svg>      
+    </div>
+
+    <div class="download">
+        <svg id="download"class="icon" aria-hidden="true">
+                <use xlink:href="#i-canvas-download"></use>
+        </svg>   
+    </div>
+    
+    <ul id="colors">
+        <li id="black" class="active"></li>      
+        <li id="red"></li>
+        <li id="yellow"></li>
+        <li id="green"></li>
+        <li id="blue"></li>
+    </ul>
+    <ul id="line">
+            <li id="big" class="active"><span></span></li>    
+            <li id="middle"><span></span></li>
+            <li id="small"><span></span></li>
+    </ul>
+
+<script src="./js/app.js"></script>
+<script src="//at.alicdn.com/t/font_1378163_8eotunupb9l.js"></script>
+</body>
+</html>
