@@ -2,7 +2,7 @@
 
 ## 体验
 
-项目地址：https://kiznaiver1998.cn/Canvas-painter/
+Live Demo：https://kiznaiver1998.cn/Canvas-painter/
 
 源码地址：https://github.com/Kiznaiver1998/Canvas-painter
 
@@ -28,6 +28,8 @@ npm run server //启动live-server服务器
 ## 开始动手干
 
 1. 首先我们想要的是一个整面的大画板
+
+
 
 2. 开始使用 Canvas 绘图
 
@@ -120,3 +122,25 @@ canvas.toDataURL("image/png")
    ```
 
    （Google 了很多模糊的原因，大多都是 1px 通过修改坐标轴的问题...由于我还没搞懂这东西模糊的原因是啥...所以采取了比较粗暴的方案）
+
+6. 发现手机端是用不了的（尴尬），突然想起来移动端是没有 mouse 事件的，应该使用 **`document.body.ontouchstart !== undefined` 判断移动端**
+
+   ```javascript
+   if (document.body.ontouchstart !== undefined) {
+   		canvas.addEventListener('mousedown', start, false)
+   		function start(e) {...}
+   		function move(e){...}
+   		function end(e){...}
+   	}else{
+   		canvas.addEventListener('touchstart', start, false)
+   		function start(e) {...}
+   		function move(e){...}
+   		function end(e){...}
+   	}
+   ```
+
+   结果：
+
+   ​	![](https://s2.ax1x.com/2019/08/31/mv7eO0.png)
+
+   

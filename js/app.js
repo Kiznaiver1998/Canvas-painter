@@ -25,7 +25,7 @@ function autoSetCanvasSize(canvas){
 function listenToMouse(canvas) {
 	let lastPoint = {'x': undefined, 'y': undefined}
 	/* 使用拖拽 DIV 思路 */
-	if (document.body.onmousedown !== undefined) {
+	if (document.body.ontouchstart !== undefined) {
 		canvas.addEventListener('mousedown', start, false)
 		function start(e) {
 			let x = e.clientX
@@ -40,7 +40,7 @@ function listenToMouse(canvas) {
 		}
 		function move(e){
 			let x = e.clientX
-			let y = e.clientY
+			let y = e.clientY	
 			if (actionStatus) {
 				ctx.clearRect(x-10,y-10,20,20)
 			}else{
