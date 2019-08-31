@@ -13,19 +13,23 @@ function autoSetCanvasSize(canvas){
 	resize()
 	window.onresize = resize
 	function resize(){
+		let tmpFill = ctx.fillStyle
+		let tmpStroke = ctx.fillStyle
 		let imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
 		let pageWidth = document.documentElement.clientWidth
 	    let pageHeight = document.documentElement.clientHeight
 	    canvas.width = pageWidth
 	    canvas.height = pageHeight
-	    ctx.putImageData(imgData,0,0);
+	    ctx.putImageData(imgData,0,0)
+	    ctx.fillStyle = tmpFill
+		ctx.strokeStyle = tmpStroke
 	}
 }
 /* 监听鼠标事件，让 canvas 绘图 */
 function listenToMouse(canvas) {
 	let lastPoint = {'x': undefined, 'y': undefined}
 	/* 使用拖拽 DIV 思路 */
-	if (document.body.ontouchstart !== undefined) {
+	if (!("ontouchstart" in window)) {
 		canvas.addEventListener('mousedown', start, false)
 		function start(e) {
 			let x = e.clientX
@@ -81,7 +85,7 @@ function listenToMouse(canvas) {
 		}
 	}
 }
-/* 使用 Canvas 画线 */
+/* 使用 Canvas 绘制线条 */
 function drawLine(x1,y1,x2,y2){
   ctx.beginPath()
   ctx.lineCap="round"
@@ -102,6 +106,7 @@ const colorPaints = {
 }
 
 colors.addEventListener('click',function(e){
+	console.log(e.target.tagName)
 	if (e.target.tagName.toLowerCase() === 'li') {
 		let colorsList = document.querySelectorAll('#colors li')
 		ctx.fillStyle = colorPaints[e.target.id]

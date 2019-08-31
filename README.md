@@ -1,5 +1,7 @@
 # Canvas-painter
 
+description: "乱涂乱画的小 demo"
+
 ## 体验
 
 Live Demo：https://kiznaiver1998.cn/Canvas-painter/
@@ -29,22 +31,24 @@ npm run server //启动live-server服务器
 
 1. 首先我们想要的是一个整面的大画板
 
-
-
 2. 开始使用 Canvas 绘图
 
 ```js
-ctx.clearRect(x,y,width,height)擦除画布
+canvas.toDataURL("image/png")将画布转为 url 用于下载
+
+context.clearRect(x,y,width,height)擦除画布
 参数：x, y, width, height
 
 /* 绘制线条 */
-ctx.beginPath();
-ctx.moveTo(20,20);
-ctx.lineTo(200,20);
-ctx.stroke()
-ctx.closePath();
+context.beginPath();
+context.moveTo(20,20);
+context.lineTo(200,20);
+context.stroke()
+context.closePath();
 
-canvas.toDataURL("image/png")
+/* 保存画布，恢复画布 */
+context.getImageData
+context.putImageData
 ```
 
 ## 遇到的坑
@@ -60,7 +64,7 @@ canvas.toDataURL("image/png")
    ctx.closePath()
    ```
 
-   会出现线断掉的情况，十分不好看
+   会出现线断掉的情况，十分不好看（解决）
 
    ![](https://s2.ax1x.com/2019/08/30/mj5Qpt.png)
 
@@ -68,7 +72,7 @@ canvas.toDataURL("image/png")
 
    使用 `lineCap="round"` 使拐角顺滑，即可解决。
 
-2. 当我给 `<ul>` 标签监听事件后，点非 `<li>` 也会触发事件，所以要进行判断：
+2. 当我给 `<ul>` 标签监听事件后，点非 `<li>` 也会触发事件，所以要进行判断：（解决）
 
    ```js
    colors.addEventListener('click',function(e){
@@ -84,28 +88,46 @@ canvas.toDataURL("image/png")
    },false);
    ```
 
-3. 出现 BUG 选定其他颜色后，resize 会重置画色为黑色？？
-
-4. 当我给 `<ul>` 标签监听事件后，点非 `<span>` 也会触发事件：
+3. 出现 BUG 选定其他颜色后，resize 会重置画色为黑色？？（解决）
 
    ```js
-   line.addEventListener('click', function(e){
-   	console.log(e.target.tagName)
-   	if (e.target.tagName.toLowerCase() === 'li') {
-   		lineWidth = ((e.target.id === 'small') && 2) ||
-   					((e.target.id === 'middle') && 5) || 
-   					((e.target.id === 'big') && 8)	
-   		let lineList = document.querySelectorAll('#line li')
-   		for (let element of lineList){
-   			element.classList.remove('active')
-   		}
-   		e.target.classList.add('active')
-   	}
-   }, false)
+   /* 因为是新换了一块画布，再 put 上去，所以我们还需要填充之前的画布颜色 */
+   function resize(){
+       let tmpFill = ctx.fillStyle
+       let tmpStroke = ctx.fillStyle
+       let imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
+       let pageWidth = document.documentElement.clientWidth
+       let pageHeight = document.documentElement.clientHeight
+       canvas.width = pageWidth
+       canvas.height = pageHeight
+       ctx.putImageData(imgData,0,0)
+       ctx.fillStyle = tmpFill
+       ctx.strokeStyle = tmpStroke
+   }
    ```
 
+4. 当我给 `<ul>` 标签监听事件后， 没有很好的办法禁止点击 `<span>` 触发事件的问题：（解决）
 
-5. 当点击下载后，canvas 画布中的线条会变的很不清晰，并且我发现了快速 resize 的过程中，也会有这样的问题。
+   ```html
+   <ul id="line">
+       <li id="big" class="active"><span></span></li>    
+       <li id="middle"></li>
+   	<li id="small"></li>
+   </ul>
+   #line li.active{
+	    transform:scale(1.6);
+	    padding: 4px 0;
+	}
+	```
+	
+	最开始我们的 HTML 结构是这样的，因为考虑到我们后续有可能增加 `<li>` 标签，所以我们是对 `<ul` 进行事件监听，但当用户点击 `span` 标签的时候就不能达到效果。我的考虑主要有两点：
+	
+	* 判断点击的是 span 标签，用它的 parentNode 进行操作。
+	* 把 span 标签去掉，使用 `::after` 伪类做线条
+	
+	最后我选择了使用伪类做，因为用 parentNode 感觉很僵硬...
+	
+5. 当点击下载后，canvas 画布中的线条会变的很不清晰，并且我发现了快速 resize 的过程中，也会有这样的问题。（临时解决，不太清楚导致这问题的具体原因）
 
    ```js
    let imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
@@ -121,9 +143,9 @@ canvas.toDataURL("image/png")
    ctx.putImageData(imgData,0,0);
    ```
 
-   （Google 了很多模糊的原因，大多都是 1px 通过修改坐标轴的问题...由于我还没搞懂这东西模糊的原因是啥...所以采取了比较粗暴的方案）
+   （Google 了很多模糊的原因，大多都是 1px 通过修改坐标轴的问题...由于我还没搞懂这东西模糊的原因是啥...所以采取了比较粗暴的方案，把初始画布存起来，再盖上）
 
-6. 发现手机端是用不了的（尴尬），突然想起来移动端是没有 mouse 事件的，应该使用 **`document.body.ontouchstart !== undefined` 判断移动端**
+6. 发现手机端是用不了的（尴尬），突然想起来移动端是没有 mouse 事件的，应该使用 **`document.body.ontouchstart !== undefined` 判断移动端**（解决）
 
    ```javascript
    if (document.body.ontouchstart !== undefined) {
@@ -143,4 +165,5 @@ canvas.toDataURL("image/png")
 
    ​	![](https://s2.ax1x.com/2019/08/31/mv7eO0.png)
 
-   
+## 待更
+

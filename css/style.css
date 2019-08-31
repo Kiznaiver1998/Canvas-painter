@@ -22,18 +22,24 @@ body{
 /*配置项*/
 :root{
     background:#cde0f1;
+    --icon-color: #638a48;
+    --icon-active-color: #fba574;
     --color-black: black;
     --color-red: #ef7977;
     --color-yellow: #f9eda5;
     --color-green: #99c091;
     --color-blue:#6daad7;
-    --icon-color: #638a48;
-    --icon-active-color: #fba574;
     --border-black: #101010;
     --border-red: #be191d;
     --border-yellow: #e6b322;
     --border-green: #1c7231;
     --border-blue: #19439e;
+    --box-shadow-black: 0 2px 5px rgba(0,0,0,.6);
+    --box-shadow-red: 0 2px 5px rgba(255,0,0,.6);
+    --box-shadow-yellow: 0 2px 5px  rgba(255,255,0,.6);
+    --box-shadow-green: 0 2px 5px  rgba(12,91,26,.6);
+    --box-shadow-blue: 0 2px 5px  rgba(129,95,246,.6);
+
 };
 /*canvas画板*/
 #canvas{
@@ -74,49 +80,49 @@ body{
 #colors li#black{
     background:var(--color-black);
     border: 1px solid var(--border-black);
-    box-shadow: 0 2px 5px rgba(0,0,0,.6);
+    box-shadow: var(--box-shadow-black);
 }
 #colors li#red{
     background: var(--color-red);
     border: 1px solid var(--border-red);
-    box-shadow: 0 2px 5px rgba(255,0,0,.6);
+    box-shadow: var(--box-shadow-red);
 }
 #colors li#yellow{
     background: var(--color-yellow);
     border: 1px solid var(--border-yellow);
-    box-shadow: 0 2px 5px  rgba(255,255,0,.6);
+    box-shadow: var(--box-shadow-yellow);
 }
 #colors li#green{
     background: var(--color-green);
     border: 1px solid var(--border-green);
-    box-shadow: 0 2px 5px  rgba(12,91,26,.6);
+    box-shadow: var(--box-shadow-green);
 }
 #colors li#blue{
     background: var(--color-blue);
     border: 1px solid var(--border-blue);
-    box-shadow: 0 2px 5px  rgba(129,95,246,.6);
+    box-shadow: var(--box-shadow-blue);
 }
 
 #colors li.active{transform:scale(1.4);}
 #colors li#black.active{
     border: 2px solid var(--border-black);
-    box-shadow: 0 3px 6px rgba(0,0,0,.6);
+    box-shadow: var(--box-shadow-black);
 }
 #colors li#red.active{
     border: 2px solid var(--border-red);
-    box-shadow: 0 3px 6px rgba(255,0,0,.6);
+    box-shadow: var(--box-shadow-red);
 }
 #colors li#yellow.active{
     border: 2px solid var(--border-yellow);
-    box-shadow: 0 3px 6px  rgba(255,255,0,.6);
+    box-shadow: var(--box-shadow-yellow);
 }
 #colors li#green.active{
     border: 2px solid var(--border-green);
-    box-shadow: 0 3px 6px  rgba(12,91,26,.6);
+    box-shadow: var(--box-shadow-green);
 }
 #colors li#blue.active{
     border: 2px solid var(--border-blue);
-    box-shadow: 0 3px 6px  rgba(129,95,246,.6);
+    box-shadow: var(--box-shadow-blue);
 }
 
 /*控制线粗细*/
@@ -124,8 +130,8 @@ body{
     position: fixed;
     top: 20em;
     left: 2em;
-
 }
+
 #line li{
     width: 20px;
     padding: 10px 0;
@@ -140,19 +146,19 @@ body{
     transform:scale(1.6);
     padding: 4px 0;
 }
-
-#line li span{
-    width:100%;
-    display:block;
-    background:#2e2e2e;
+#line li::after{
+    content: '';
+    width: 100%;
+    display: block;
+    background: #2e2e2e;
 }
-#line li#big span{
+#line li#big::after{
     height:6px;
 }
-#line li#middle span{
+#line li#middle::after{
     height:4px;
 }
-#line li#small span{
+#line li#small::after{
     height:2px;
 }
 
