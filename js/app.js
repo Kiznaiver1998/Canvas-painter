@@ -1,5 +1,6 @@
 let canvas = document.getElementById('canvas')
 let ctx = canvas.getContext('2d')
+ctx.globalCompositeOperation = 'source-atop';
 let actionStatus = false
 /* false 表示为默认铅笔模式，true 为橡皮模式*/
 let lineWidth = 8
@@ -23,32 +24,61 @@ function autoSetCanvasSize(canvas){
 /* 监听鼠标事件，让 canvas 绘图 */
 function listenToMouse(canvas) {
 	let lastPoint = {'x': undefined, 'y': undefined}
-	/* 使用拖拽 DIV思想 */
-	canvas.addEventListener('mousedown', start, false)
-	function start(e) {
-		let x = e.clientX
-		let y = e.clientY
-		if (actionStatus) {
-			ctx.clearRect(x-10,y-10,20,20)
-		}else{
-			lastPoint = {'x':x, 'y': y}
+	/* 使用拖拽 DIV 思路 */
+	if (document.body.onmousedown !== undefined) {
+		canvas.addEventListener('mousedown', start, false)
+		function start(e) {
+			let x = e.clientX
+			let y = e.clientY
+			if (actionStatus) {
+				ctx.clearRect(x-10,y-10,20,20)
+			}else{
+				lastPoint = {'x':x, 'y': y}
+			}
+			document.addEventListener('mousemove', move, false);
+			document.addEventListener('mouseup', end, false);
 		}
-		document.addEventListener('mousemove', move, false);
-		document.addEventListener('mouseup', end, false);
-	}
-	function move(e){
-		let x = e.clientX
-		let y = e.clientY
-		if (actionStatus) {
-			ctx.clearRect(x-10,y-10,20,20)
-		}else{
-			drawLine(lastPoint.x, lastPoint.y, x, y)
-			lastPoint = {'x':x, 'y': y}
+		function move(e){
+			let x = e.clientX
+			let y = e.clientY
+			if (actionStatus) {
+				ctx.clearRect(x-10,y-10,20,20)
+			}else{
+				drawLine(lastPoint.x, lastPoint.y, x, y)
+				lastPoint = {'x':x, 'y': y}
+			}
 		}
-	}
-	function end(e){
-		document.removeEventListener('mousemove', move);
-        document.removeEventListener('mouseup', end);
+		function end(e){
+			document.removeEventListener('mousemove', move);
+	        document.removeEventListener('mouseup', end);
+		}
+	}else{
+		canvas.addEventListener('touchstart', start, false)
+		function start(e) {
+			let x = e.touches[0].clientX
+			let y = e.touches[0].clientY
+			if (actionStatus) {
+				ctx.clearRect(x-10,y-10,20,20)
+			}else{
+				lastPoint = {'x':x, 'y': y}
+			}
+			document.addEventListener('touchmove', move, false);
+			document.addEventListener('touchend', end, false);
+		}
+		function move(e){
+			let x = e.touches[0].clientX
+			let y = e.touches[0].clientY
+			if (actionStatus) {
+				ctx.clearRect(x-10,y-10,20,20)
+			}else{
+				drawLine(lastPoint.x, lastPoint.y, x, y)
+				lastPoint = {'x':x, 'y': y}
+			}
+		}
+		function end(e){
+			document.removeEventListener('touchmove', move);
+	        document.removeEventListener('touchend', end);
+		}
 	}
 }
 /* 使用 Canvas 画线 */

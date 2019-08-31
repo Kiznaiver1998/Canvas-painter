@@ -1,5 +1,11 @@
 # Canvas-painter
 
+## 体验
+
+项目地址：https://kiznaiver1998.cn/Canvas-painter/
+
+源码地址：https://github.com/Kiznaiver1998/Canvas-painter
+
 ## 使用
 
 ```bash
@@ -29,6 +35,7 @@ npm run server //启动live-server服务器
 ctx.clearRect(x,y,width,height)擦除画布
 参数：x, y, width, height
 
+/* 绘制线条 */
 ctx.beginPath();
 ctx.moveTo(20,20);
 ctx.lineTo(200,20);
@@ -113,5 +120,3 @@ canvas.toDataURL("image/png")
    ```
 
    （Google 了很多模糊的原因，大多都是 1px 通过修改坐标轴的问题...由于我还没搞懂这东西模糊的原因是啥...所以采取了比较粗暴的方案）
-
-6. 
