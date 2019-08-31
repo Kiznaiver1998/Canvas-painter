@@ -145,10 +145,10 @@ context.putImageData
 
    （Google 了很多模糊的原因，大多都是 1px 通过修改坐标轴的问题...由于我还没搞懂这东西模糊的原因是啥...所以采取了比较粗暴的方案，把初始画布存起来，再盖上）
 
-6. 发现手机端是用不了的（尴尬），突然想起来移动端是没有 mouse 事件的，应该使用 **`document.body.ontouchstart !== undefined` 判断移动端**（解决）
+6. 发现手机端是用不了的（尴尬），突然想起来移动端是没有 mouse 事件的，应该使用 `document.body.ontouchstart !== undefined` 判断移动端或者是使用`document.hasOwnProperty("ontouchstart")`，由于谷歌开发者工具模拟手机的时候都不支持，所以我最终选择了：
 
    ```javascript
-   if (document.body.ontouchstart !== undefined) {
+   if (!("ontouchstart" in window)) {
    		canvas.addEventListener('mousedown', start, false)
    		function start(e) {...}
    		function move(e){...}
@@ -162,8 +162,6 @@ context.putImageData
    ```
 
    结果：
-
-   ​	![](https://s2.ax1x.com/2019/08/31/mv7eO0.png)
 
 ## 待更
 
