@@ -11,6 +11,7 @@ Live Demo：https://kiznaiver1998.cn/Canvas-painter/
 ## 使用
 
 ```bash
+npm install
 npm run server //启动live-server服务器
 ```
 
