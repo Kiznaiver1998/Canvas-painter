@@ -106,7 +106,6 @@ const colorPaints = {
 }
 
 colors.addEventListener('click',function(e){
-	console.log(e.target.tagName)
 	if (e.target.tagName.toLowerCase() === 'li') {
 		let colorsList = document.querySelectorAll('#colors li')
 		ctx.fillStyle = colorPaints[e.target.id]
