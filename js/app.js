@@ -11,11 +11,20 @@ listenToMouse(canvas)
 /* 设置 canvas 为页面大小 */
 function autoSetCanvasSize(canvas){
 	resize()
-	window.onresize = resize
+	const debounce = (func, wait = 50) => {
+		let timer = 0
+		return function(...args){
+			if(timer) clearTimeout(timer)
+			timer = setTimeout(()=>{
+				func.apply(this, args)
+			}, wait)
+		}
+	}
+	window.onresize = debounce(resize)
 	function resize(){
 		let tmpFill = ctx.fillStyle
 		let tmpStroke = ctx.fillStyle
-		let imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
+		let imgData = ctx.getImageData(0,0,canvas.width,canvas.height)
 		let pageWidth = document.documentElement.clientWidth
 	    let pageHeight = document.documentElement.clientHeight
 	    canvas.width = pageWidth
@@ -106,7 +115,6 @@ const colorPaints = {
 }
 
 colors.addEventListener('click',function(e){
-	console.log(e.target.tagName)
 	if (e.target.tagName.toLowerCase() === 'li') {
 		let colorsList = document.querySelectorAll('#colors li')
 		ctx.fillStyle = colorPaints[e.target.id]
